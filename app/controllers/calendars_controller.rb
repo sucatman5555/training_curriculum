@@ -47,11 +47,23 @@ class CalendarsController < ApplicationController
       plans.each do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      # 2020/12/24 edit S.Shimada
-      # Issue1【古い記述であるハッシュロケットをシンボル型へ書き換える】
-      # days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans}
-      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans}
-      # 2020/12/24 edit end
+
+      # 2020/12/24 edit Issue6 S.Shimada
+      # Issue6【曜日も表示できるよう、仕様を変更する
+        # 2020/12/24 edit Issue1 S.Shimada
+        # Issue1【古い記述であるハッシュロケットをシンボル型へ書き換える】
+        # Issue1 before) days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans}
+        # days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans}
+        # 2020/12/24 edit Issue1 end
+      # wdayメソッドを用いて取得した数値
+      wday_num = Date.today.wday + x
+      # 配列wdaysから要素を取り出すときの添字が7以上にならないように工夫
+      if wday_num >= 7 
+        wday_num = wday_num -7
+      end
+      # 配列wdaysの値を追加
+      days = { month: (@todays_date + x).month, date: (@todays_date + x).day, plans: today_plans, wday: wdays[wday_num]}
+      # 2020/12/24 edit Issue6 end
       @week_days.push(days)
     end
 
