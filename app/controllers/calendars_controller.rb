@@ -12,6 +12,7 @@ class CalendarsController < ApplicationController
 
   # 予定の保存
   def create
+    # binding.pry # Issue4確認用
     Plan.create(plan_params)
     redirect_to action: :index
   end
@@ -19,7 +20,11 @@ class CalendarsController < ApplicationController
   private
 
   def plan_params
-    params.require(:calendars).permit(:date, :plan)
+    # 2020/12/24 edit S.Shimada
+    # Issue4【予定を入力し保存ボタンを押しても、保存されないバグを修正する】
+    # params.require(:calendars).permit(:date, :plan)
+    params.require(:plan).permit(:date, :plan)
+    # 2020/12/24 edit end
   end
 
   # 2020/12/24 edit S.Shimada
